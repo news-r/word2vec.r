@@ -393,3 +393,82 @@ cosine.wordvectors <- function(model, word, n = 10L){
     cosine = as.numeric(cosine[[2]])
   )
 }
+
+#' Similarity
+#' 
+#' Return the cosine similarity value between two words \code{word1} and \code{word2}.
+#' 
+#' @inheritParams get_vector
+#' @param word1,word2 Words to compare.
+#' 
+#' @examples
+#' \dontrun{
+#' # setup word2vec Julia dependency
+#' setup_word2vec()
+#' 
+#' # sample corpus
+#' data("macbeth", package = "word2vec.jlr")
+#' 
+#' # train model
+#' model_path <- word2vec(macbeth)
+#' 
+#' # get word vectors
+#' model <- word_vectors(model_path)
+#' 
+#' # similarity b/w macbeth and wife
+#' similarity(model, "macbeth", "king")
+#' }
+#' 
+#' @name similarity
+#' 
+#' @export
+similarity <- function(model, word1, word2) UseMethod("similarity")
+
+#' @rdname similarity
+#' @method similarity wordvectors
+#' @export
+similarity.wordvectors <- function(model, word1, word2){
+  assert_that(!missing(word1), msg = "Missing `word1`")
+  assert_that(!missing(word2), msg = "Missing `word2`")
+  julia_call("similarity", model, word1, word2)
+}
+
+#' Cosine Similar Words
+#' 
+#' Return the top \code{n} (by default \code{n = 10}) words 
+#' similar to \code{word}.
+#' 
+#' @inheritParams get_vector
+#' @param n Number of neightbours to return.
+#' 
+#' @examples
+#' \dontrun{
+#' # setup word2vec Julia dependency
+#' setup_word2vec()
+#' 
+#' # sample corpus
+#' data("macbeth", package = "word2vec.jlr")
+#' 
+#' # train model
+#' model_path <- word2vec(macbeth)
+#' 
+#' # get word vectors
+#' model <- word_vectors(model_path)
+#' 
+#' # words similar to macbeth
+#' cosine_similar_words(model, "macbeth", 20L)
+#' }
+#' 
+#' @name cosine_similar_words
+#' 
+#' @export
+cosine_similar_words <- function(model, word, n = 10L) UseMethod("cosine_similar_words")
+
+#' @rdname cosine_similar_words
+#' @method cosine_similar_words wordvectors
+#' @export
+cosine_similar_words.wordvectors <- function(model, word, n = 10L){
+  assert_that(!missing(word), msg = "Missing `word`")
+  n <- as.integer(n) # force integer
+  julia_call("cosine_similar_words", model, word, n)
+}

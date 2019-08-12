@@ -6,6 +6,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>word2vec • word2vec.r</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <!-- theme --><meta name="theme-color" content="#2f2f2f">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="../sandstone.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
@@ -14,6 +20,7 @@
 <link href="../news-r.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="word2vec">
 <meta property="og:description" content="">
+<meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -128,14 +135,24 @@ model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/word_
 <a href="#functional" class="anchor"></a>Functional</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># words similar to king</span>
 <span class="kw"><a href="../reference/cosine_similar_words.html">cosine_similar_words</a></span>(model, <span class="st">"king"</span>, 5L)
-<span class="co">#&gt; [1] "king"  "yet"   "rosse" "doe"   "from"</span>
+<span class="co">#&gt; [1] "king"  "yet"   "rosse" "and"   "from"</span>
 
 <span class="co"># size of model</span>
 <span class="kw"><a href="../reference/size.html">size</a></span>(model)
 <span class="co">#&gt; # A tibble: 1 x 2</span>
 <span class="co">#&gt;   length words</span>
 <span class="co">#&gt;    &lt;int&gt; &lt;int&gt;</span>
-<span class="co">#&gt; 1    100   511</span></code></pre></div>
+<span class="co">#&gt; 1    100   511</span>
+
+<span class="co"># get vocabulary</span>
+vocab &lt;-<span class="st"> </span><span class="kw"><a href="../reference/vocabulary.html">vocabulary</a></span>(model)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(vocab)
+<span class="co">#&gt; [1] "&lt;/s&gt;" "the"  "and"  "to"   "i"    "of"</span>
+
+<span class="co"># index of word macbeth</span>
+idx &lt;-<span class="st"> </span><span class="kw"><a href="../reference/index.html">index</a></span>(model, <span class="st">"macbeth"</span>)
+vocab[idx]
+<span class="co">#&gt; [1] "macbeth"</span></code></pre></div>
 </div>
 <div id="reference-class" class="section level2">
 <h2 class="hasAnchor">
@@ -143,40 +160,40 @@ model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/word_
 <p>Because everything depends on the vectors (<code>model</code> object in our case) we provide reference class which limits the repetitive specification of said model as first argument to all functions.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wv &lt;-<span class="st"> </span>WordVectors<span class="op">$</span><span class="kw">new</span>(model)
 wv<span class="op">$</span><span class="kw"><a href="../reference/get_vector.html">get_vector</a></span>(<span class="st">"macbeth"</span>)
-<span class="co">#&gt;   [1]  0.044781567 -0.097204879  0.095098257 -0.127519868  0.057545105</span>
-<span class="co">#&gt;   [6] -0.026212387  0.024911468 -0.002352281 -0.060056285  0.217653768</span>
-<span class="co">#&gt;  [11]  0.056716494  0.207835699 -0.132066019 -0.081735194 -0.014827756</span>
-<span class="co">#&gt;  [16]  0.207367777  0.139667797  0.065974032  0.132721109  0.122295230</span>
-<span class="co">#&gt;  [21] -0.029888985  0.059826223  0.125395698 -0.160079905 -0.010972763</span>
-<span class="co">#&gt;  [26] -0.084384800  0.005905561  0.031545232  0.149352313  0.057850717</span>
-<span class="co">#&gt;  [31] -0.085998155 -0.010363978 -0.185094705  0.047606156 -0.054584526</span>
-<span class="co">#&gt;  [36] -0.004806433  0.100839071 -0.067351964  0.035146280 -0.063096801</span>
-<span class="co">#&gt;  [41] -0.035812581  0.134077108 -0.132161066 -0.142634713  0.072186180</span>
-<span class="co">#&gt;  [46]  0.107044395 -0.027877896 -0.005703770 -0.045157854 -0.048700411</span>
-<span class="co">#&gt;  [51] -0.017603603 -0.076236139  0.047507211 -0.033385724 -0.012674828</span>
-<span class="co">#&gt;  [56] -0.055219632  0.163039997 -0.043775535  0.002452202 -0.194913262</span>
-<span class="co">#&gt;  [61]  0.074846997 -0.124793249 -0.021383046 -0.062949113 -0.070420750</span>
-<span class="co">#&gt;  [66]  0.197729078  0.122114885 -0.045637961  0.175225457  0.042682743</span>
-<span class="co">#&gt;  [71]  0.002927435 -0.016213974  0.111860576 -0.117478073 -0.166022023</span>
-<span class="co">#&gt;  [76]  0.010928408 -0.165837779  0.015541824 -0.177691307 -0.149771493</span>
-<span class="co">#&gt;  [81]  0.033315049  0.010313286 -0.067639053 -0.077788079  0.063518418</span>
-<span class="co">#&gt;  [86]  0.199638783  0.055100702 -0.038211654  0.242814307 -0.055161629</span>
-<span class="co">#&gt;  [91] -0.038692736  0.086918889  0.006386643  0.038615724  0.042105640</span>
-<span class="co">#&gt;  [96]  0.083208660  0.052336552  0.176346520  0.006712726 -0.044818123</span>
+<span class="co">#&gt;   [1]  0.060261002 -0.099035711  0.089729781 -0.131802295  0.054377451</span>
+<span class="co">#&gt;   [6] -0.037143736  0.034620966  0.013240862 -0.046540684  0.216212103</span>
+<span class="co">#&gt;  [11]  0.062457392  0.184753333 -0.145580993 -0.073077572  0.003581891</span>
+<span class="co">#&gt;  [16]  0.196514459  0.120471438  0.053800082  0.140348820  0.136948506</span>
+<span class="co">#&gt;  [21] -0.031166868  0.050116140  0.124824226 -0.164362478 -0.005901479</span>
+<span class="co">#&gt;  [26] -0.092760047  0.007204235  0.018347540  0.167392284  0.069425808</span>
+<span class="co">#&gt;  [31] -0.069325596 -0.015448745 -0.162950776  0.053471405 -0.045633260</span>
+<span class="co">#&gt;  [36] -0.001947240  0.099237974 -0.089840106  0.039227503 -0.065056930</span>
+<span class="co">#&gt;  [41] -0.008485846  0.145537322 -0.139205575 -0.139850518  0.056980666</span>
+<span class="co">#&gt;  [46]  0.111228944 -0.021939085 -0.019801994 -0.056312279 -0.061632252</span>
+<span class="co">#&gt;  [51] -0.020469921 -0.082446020  0.063011317 -0.054398137 -0.014775302</span>
+<span class="co">#&gt;  [56] -0.034342855  0.161132708 -0.078148394 -0.020963626 -0.218176811</span>
+<span class="co">#&gt;  [61]  0.083799342 -0.134379308 -0.029002656 -0.061294381 -0.073210881</span>
+<span class="co">#&gt;  [66]  0.175620705  0.110194186 -0.070679837  0.158414571  0.084456696</span>
+<span class="co">#&gt;  [71]  0.005258834 -0.020719532  0.093608631 -0.102572553 -0.169927925</span>
+<span class="co">#&gt;  [76] -0.009947655 -0.173633013  0.014916886 -0.194387940 -0.147128763</span>
+<span class="co">#&gt;  [81]  0.028671680  0.025153226 -0.046986122 -0.079825796  0.074098080</span>
+<span class="co">#&gt;  [86]  0.187334483  0.049447294 -0.055605278  0.227896461 -0.056259874</span>
+<span class="co">#&gt;  [91] -0.039628351  0.077658366  0.016895844  0.038136662  0.047202176</span>
+<span class="co">#&gt;  [96]  0.088280384  0.065880691  0.166309718  0.009127571 -0.059123733</span>
 wv<span class="op">$</span><span class="kw"><a href="../reference/cosine.html">cosine</a></span>(<span class="st">"rosse"</span>)
 <span class="co">#&gt; # A tibble: 10 x 2</span>
 <span class="co">#&gt;    index cosine</span>
 <span class="co">#&gt;    &lt;int&gt;  &lt;dbl&gt;</span>
 <span class="co">#&gt;  1    67  1    </span>
 <span class="co">#&gt;  2   106  1.000</span>
-<span class="co">#&gt;  3    56  1.000</span>
-<span class="co">#&gt;  4    54  1.000</span>
-<span class="co">#&gt;  5    51  1.000</span>
-<span class="co">#&gt;  6     3  1.000</span>
-<span class="co">#&gt;  7    91  1.000</span>
-<span class="co">#&gt;  8     4  1.000</span>
-<span class="co">#&gt;  9    13  1.000</span>
-<span class="co">#&gt; 10    48  1.000</span></code></pre></div>
+<span class="co">#&gt;  3    91  1.000</span>
+<span class="co">#&gt;  4    51  1.000</span>
+<span class="co">#&gt;  5    54  1.000</span>
+<span class="co">#&gt;  6    56  1.000</span>
+<span class="co">#&gt;  7   115  1.000</span>
+<span class="co">#&gt;  8    13  1.000</span>
+<span class="co">#&gt;  9     3  1.000</span>
+<span class="co">#&gt; 10    10  1.000</span></code></pre></div>
 </div>
   </div>
 

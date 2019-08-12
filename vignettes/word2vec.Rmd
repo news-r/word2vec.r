@@ -61,6 +61,14 @@ cosine_similar_words(model, "king", 5L)
 
 # size of model
 size(model)
+
+# get vocabulary
+vocab <- vocabulary(model)
+head(vocab)
+
+# index of word macbeth
+idx <- index(model, "macbeth")
+vocab[idx]
 ```
 
 ## Reference Class

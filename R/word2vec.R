@@ -302,7 +302,12 @@ size <- function(model) UseMethod("size")
 #' @method size wordvectors
 #' @export
 size.wordvectors <- function(model){
-  julia_call("size", model)
+  size <- julia_call("size", model)
+  class(size) <- "list" # dangerous but wtf, a tuple is just a list innit
+  tibble::tibble(
+    length = as.integer(size[[1]]),
+    words = as.integer(size[[2]])
+  )
 }
 
 #' Index
@@ -325,7 +330,7 @@ size.wordvectors <- function(model){
 #' # get word vectors
 #' model <- word_vectors(model_path)
 #' 
-#' # check if James I is mentioned
+#' # cindex of macbeth
 #' index(model, "macbeth")
 #' }
 #' 
@@ -340,4 +345,51 @@ index <- function(model, word) UseMethod("index")
 index.wordvectors <- function(model, word){
   assert_that(!missing(word), msg = "Missing `word`")
   julia_call("index", model, word)
+}
+
+#' Cosine
+#' 
+#' Return the position of \code{n} (by default \code{n = 10}) neighbors 
+#' of \code{word} and their cosine similarities.
+#' 
+#' @inheritParams get_vector
+#' @param n Number of neightbours to return.
+#' 
+#' @examples
+#' \dontrun{
+#' # setup word2vec Julia dependency
+#' setup_word2vec()
+#' 
+#' # sample corpus
+#' data("macbeth", package = "word2vec.jlr")
+#' 
+#' # train model
+#' model_path <- word2vec(macbeth)
+#' 
+#' # get word vectors
+#' model <- word_vectors(model_path)
+#' 
+#' # neighbours of macbeth and their cosine
+#' cosine(model, "macbeth", 20L)
+#' }
+#' 
+#' @return A \link[tibble]{tibble} of word \code{index} and their \code{cosine}.
+#' 
+#' @name cosine
+#' 
+#' @export
+cosine <- function(model, word, n = 10L) UseMethod("cosine")
+
+#' @rdname cosine
+#' @method cosine wordvectors
+#' @export
+cosine.wordvectors <- function(model, word, n = 10L){
+  assert_that(!missing(word), msg = "Missing `word`")
+  n <- as.integer(n) # force integer
+  cosine <- julia_call("cosine", model, word, n, need_return = "R")
+  class(cosine) <- "list" # dangerous but wtf, a tuple is just a list innit
+  tibble::tibble(
+    index = as.integer(cosine[[1]]),
+    cosine = as.numeric(cosine[[2]])
+  )
 }

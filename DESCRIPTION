@@ -16,6 +16,7 @@ Imports:
   cli, 
   glue,
   crayon,
+  tibble,
   JuliaCall,
   assertthat
 RoxygenNote: 6.1.1

@@ -48,7 +48,6 @@ word2vec <- function(train, output = NULL, size = 100L, window = 5L,
 
   # sanity checks
   assert_that(!missing(train), msg = "Missing `train`")
-  assert_that(length(train) == 1, msg = "`train` should be a vector of length 1")
   word2vec_installed <- julia_exists("word2vec")
   if(!word2vec_installed) 
     stop(
@@ -70,7 +69,7 @@ word2vec <- function(train, output = NULL, size = 100L, window = 5L,
   input_temp <- FALSE
 
   # write to file if character string passed
-  if(!file.exists(train)){
+  if(!file.exists(train[1])){
     train_path <- tempfile(fileext = "") # no extension
     write(train, file = train_path)
     input_temp <- TRUE

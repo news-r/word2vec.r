@@ -12,6 +12,10 @@ Description: Implementation of 'Julia' 'Word2vec'.
 Encoding: UTF-8
 LazyData: true
 Imports: 
-  JuliaCall
+  cli, 
+  glue,
+  crayon,
+  JuliaCall,
+  assertthat
 RoxygenNote: 6.1.1
 License: MIT + file LICENSE

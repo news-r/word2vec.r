@@ -7,8 +7,60 @@
 word2vec(train, output = NULL, size = 100L, window = 5L,
   sample = 0.001, hs = 0L, negative = 5L, threads = 12L,
   iter = 5L, min_count = 5L, alpha = 0.025, debug = 2L,
-  binary = 1L, cbow = 1L, verbose = TRUE, ...)
+  binary = 0L, cbow = 1L, verbose = TRUE)
+}
+\arguments{
+\item{train}{Use text data from file to train the model.}
+
+\item{output}{Use file to save the resulting word vectors / word clusters.}
+
+\item{size}{Set size of word vectors; default is \code{100L}.}
+
+\item{window}{Set max skip length between words; default is \code{5L}.}
+
+\item{sample}{Set threshold for occurrence of words. 
+Those that appear with higher frequency in the training data will be randomly 
+down-sampled; default is \code{1e-5}.}
+
+\item{hs}{Use Hierarchical Softmax; default is \code{1} (\code{0L} = not used)}
+
+\item{negative}{Number of negative examples; default is \code{0L}, common values are 
+\code{5 - 10} (\code{0L} = not used).}
+
+\item{threads}{Use \eqn{n} threads (default \code{12L}).}
+
+\item{iter}{Run more training iterations (default \code{5}).}
+
+\item{min_count}{This will discard words that appear less than \eqn{n} times; 
+default is \code{5L}.}
+
+\item{alpha}{Set the starting learning rate; default is \code{.025}.}
+
+\item{debug}{Set the debug mode (default = \code{2L} = more info during training).}
+
+\item{binary}{Save the resulting vectors in binary moded; default is \code{0L} (off).}
+
+\item{cbow}{Use the continuous back of words model; default is \code{1L} (skip-gram model).}
+
+\item{verbose}{Whether to print output from training.}
+}
+\value{
+Invisibly returns the \code{output}.
 }
 \description{
 Train Word2Vec model.
+}
+\examples{
+\dontrun{
+# sample corpus
+corpus <- paste("Julia has foreign function interfaces for C/Fortran,", 
+  "C++, Python, R, Java, and many other languages.")
+
+# train model
+model_path <- word2vec(corpus)
+}
+
+}
+\seealso{
+\code{\link{as_word2vec}} to load a pre-trained model.
 }

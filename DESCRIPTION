@@ -1,4 +1,4 @@
-Package: word2vec.jlr
+Package: word2vec.r
 Title: Implementation of 'Julia' 'Word2vec'
 Version: 0.0.1
 Authors@R: 

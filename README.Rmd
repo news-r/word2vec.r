@@ -1,0 +1,95 @@
+---
+output: 
+  github_document:
+    html_preview: false
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+# word2vec.r
+
+<!-- badges: start -->
+[![Travis build status](https://travis-ci.org/news-r/word2vec.r.svg?branch=master)](https://travis-ci.org/news-r/word2vec.r)
+<!-- badges: end -->
+
+`word2vec.r` is an R wrapper to the `Word2Vec.jl` Julia package.
+
+## Installation
+
+Being a wrapper to a [Julia](https://julialang.org/) package, `word2vec.r` requires the latter to be installed.
+
+You can install the package from Github with:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("news-r/word2vec.r")
+```
+
+## Example
+
+You _must_ run `setup_word2vec` at the begining of every session, you will otherwise encounter errors and be prompted to do so.
+
+```{r}
+library(word2vec.r)
+
+# setup word2vec Julia dependency
+setup_word2vec()
+```
+
+The package comes with a dataset, [Macbeth by Shakespeare](https://en.wikipedia.org/wiki/Macbeth). However, being a corpus of 17,319 words it is not lazyly loaded and needs to be imported manually with the `data` function.
+
+```{r}
+# sample corpus
+data("macbeth", package = "word2vec.r")
+```
+
+With data we can train a model and extract the vectors.
+
+```{r}
+# train model
+model_path <- word2vec(macbeth)
+
+# get word vectors
+model <- word_vectors(model_path)
+```
+
+There are then a multitude of functions one can use on the model.
+
+- `get_vector`
+- `vocabulary`
+- `in_vocabulary`
+- `size`
+- `index`
+- `cosine`
+- `cosine_similar_words`
+- `similarity`
+- `analogy`
+- `analogy_words`
+
+All are well documented and have examples, visit their respective man pages with i.e.: `?get_vector`. Note that since all the functions listed above require the output of `word_vectors` (the `model` object in our case). Therefore a convenient reference class also exists.
+
+### Functional
+
+```{r}
+# words similar to king
+cosine_similar_words(model, "king", 5L)
+
+# size of model
+size(model)
+```
+
+### Reference Class
+
+```{r}
+wv <- WordVectors$new(model)
+wv$get_vector("macbeth")
+wv$cosine("rosse")
+```

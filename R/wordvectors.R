@@ -28,7 +28,7 @@
 #' setup_word2vec()
 #' 
 #' # sample corpus
-#' data("macbeth", package = "word2vec.jlr")
+#' data("macbeth", package = "word2vec.r")
 #' 
 #' # train model
 #' model_path <- word2vec(macbeth)
@@ -130,7 +130,7 @@ as_word2vec <- function(file){
 #' setup_word2vec()
 #' 
 #' # sample corpus
-#' data("macbeth", package = "word2vec.jlr")
+#' data("macbeth", package = "word2vec.r")
 #' 
 #' # train model
 #' model_path <- word2vec(macbeth)
@@ -185,7 +185,7 @@ word_vectors.word2vec <- function(file){
 #' setup_word2vec()
 #' 
 #' # sample corpus
-#' data("macbeth", package = "word2vec.jlr")
+#' data("macbeth", package = "word2vec.r")
 #' 
 #' # train model
 #' model_path <- word2vec(macbeth)
@@ -254,7 +254,7 @@ WordVectors <- R6::R6Class(
 #' setup_word2vec()
 #' 
 #' # sample corpus
-#' data("macbeth", package = "word2vec.jlr")
+#' data("macbeth", package = "word2vec.r")
 #' 
 #' # train model
 #' model_path <- word2vec(macbeth)
@@ -291,7 +291,7 @@ get_vector.wordvectors <- function(model, word){
 #' setup_word2vec()
 #' 
 #' # sample corpus
-#' data("macbeth", package = "word2vec.jlr")
+#' data("macbeth", package = "word2vec.r")
 #' 
 #' # train model
 #' model_path <- word2vec(macbeth)
@@ -328,7 +328,7 @@ vocabulary.wordvectors <- function(model){
 #' setup_word2vec()
 #' 
 #' # sample corpus
-#' data("macbeth", package = "word2vec.jlr")
+#' data("macbeth", package = "word2vec.r")
 #' 
 #' # train model
 #' model_path <- word2vec(macbeth)
@@ -365,7 +365,7 @@ in_vocabulary.wordvectors <- function(model, word){
 #' setup_word2vec()
 #' 
 #' # sample corpus
-#' data("macbeth", package = "word2vec.jlr")
+#' data("macbeth", package = "word2vec.r")
 #' 
 #' # train model
 #' model_path <- word2vec(macbeth)
@@ -406,7 +406,7 @@ size.wordvectors <- function(model){
 #' setup_word2vec()
 #' 
 #' # sample corpus
-#' data("macbeth", package = "word2vec.jlr")
+#' data("macbeth", package = "word2vec.r")
 #' 
 #' # train model
 #' model_path <- word2vec(macbeth)
@@ -445,7 +445,7 @@ index.wordvectors <- function(model, word){
 #' setup_word2vec()
 #' 
 #' # sample corpus
-#' data("macbeth", package = "word2vec.jlr")
+#' data("macbeth", package = "word2vec.r")
 #' 
 #' # train model
 #' model_path <- word2vec(macbeth)
@@ -491,7 +491,7 @@ cosine.wordvectors <- function(model, word, n = 10L){
 #' setup_word2vec()
 #' 
 #' # sample corpus
-#' data("macbeth", package = "word2vec.jlr")
+#' data("macbeth", package = "word2vec.r")
 #' 
 #' # train model
 #' model_path <- word2vec(macbeth)
@@ -531,7 +531,7 @@ similarity.wordvectors <- function(model, word1, word2){
 #' setup_word2vec()
 #' 
 #' # sample corpus
-#' data("macbeth", package = "word2vec.jlr")
+#' data("macbeth", package = "word2vec.r")
 #' 
 #' # train model
 #' model_path <- word2vec(macbeth)
@@ -573,7 +573,7 @@ cosine_similar_words.wordvectors <- function(model, word, n = 10L){
 #' setup_word2vec()
 #' 
 #' # sample corpus
-#' data("macbeth", package = "word2vec.jlr")
+#' data("macbeth", package = "word2vec.r")
 #' 
 #' # train model
 #' model_path <- word2vec(macbeth)

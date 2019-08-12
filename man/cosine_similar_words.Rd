@@ -26,7 +26,7 @@ similar to \code{word}.
 setup_word2vec()
 
 # sample corpus
-data("macbeth", package = "word2vec.jlr")
+data("macbeth", package = "word2vec.r")
 
 # train model
 model_path <- word2vec(macbeth)

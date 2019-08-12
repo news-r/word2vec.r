@@ -1,0 +1,23 @@
+template:
+  package: newsrdown
+
+navbar:
+  title: "word2vec.r"
+  left:
+    - text: "Reference"
+      href: "reference/"
+    - text: "Word2Vec"
+      href: "articles/word2vec.html"
+    - text: "Clustering"
+      href: "articles/clustering.html"
+  right:
+    - icon: fa-balance-scale
+      href: LICENSE.html
+    - icon: fa-newspaper-o
+      href: news/index.html
+    - icon: fa-github fa-lg
+      href: "https://github.com/news-r/word2vec.r"
+
+authors:
+  John Coene:
+    href: http://john-coene.com

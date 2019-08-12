@@ -1,0 +1,74 @@
+---
+title: "word2vec"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{word2vec}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+You _must_ run `setup_word2vec` at the begining of every session, you will otherwise encounter errors and be prompted to do so.
+
+```{r}
+library(word2vec.r)
+
+# setup word2vec Julia dependency
+setup_word2vec()
+```
+
+The package comes with a dataset, [Macbeth by Shakespeare](https://en.wikipedia.org/wiki/Macbeth). However, being a corpus of 17,319 words it is not lazyly loaded and needs to be imported manually with the `data` function. Note that the dataset is mildly preprocessed, all words are lowercase and punctuation has been removed.
+
+```{r}
+data("macbeth", package = "word2vec.r")
+```
+
+## Functions
+
+With data we can train a model and extract the vectors.
+
+```{r}
+model_path <- word2vec(macbeth) # train model
+model <- word_vectors(model_path) # get word vectors
+```
+
+There are then a multitude of functions one can use on the model.
+
+- `get_vector`
+- `vocabulary`
+- `in_vocabulary`
+- `size`
+- `index`
+- `cosine`
+- `cosine_similar_words`
+- `similarity`
+- `analogy`
+- `analogy_words`
+
+All are well documented and have examples, visit their respective man pages with i.e.: `?get_vector`. Note that since all the functions listed above require the output of `word_vectors` (the `model` object in our case). Therefore a convenient reference class also exists.
+
+## Functional
+
+```{r}
+# words similar to king
+cosine_similar_words(model, "king", 5L)
+
+# size of model
+size(model)
+```
+
+## Reference Class
+
+Because everything depends on the vectors (`model` object in our case) we provide reference class which limits the repetitive specification of said model as first argument to all functions.
+
+```{r}
+wv <- WordVectors$new(model)
+wv$get_vector("macbeth")
+wv$cosine("rosse")
+```

@@ -1,0 +1,71 @@
+<!-- badges go here -->
+[![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/JohnCoene)
+[![Travis build status](https://travis-ci.org/news-r/word2vec.r.svg?branch=master)](https://travis-ci.org/news-r/word2vec.r)
+<!-- badges: end -->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE,
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(htmltools)
+```
+
+```{r, echo=FALSE}
+br()
+br()
+
+div(
+  class = "row",
+  div(
+    class = "col-md-4",
+    img(
+      src = "logo.png",
+      class = "img-responsive responsive-img"
+    )
+  ),
+  div(
+    class = "col-md-8",
+    p(
+      "An R wrapper to the Julia",
+      a("word2vec.jl", href = "https://github.com/JuliaText/Word2Vec.jl", target = "_blank"), 
+      "pacakge."
+    ),
+    p(
+      tags$a(
+        tags$i(class = "fa fa-table"),
+        class = "btn btn-primary",
+        href = "articles/word2vec",
+        style = "margin-bottom: 5px;",
+        "Word2Vec"
+      ),
+      tags$a(
+        tags$i(class = "fa fa-object-group"),
+        class = "btn btn-default",
+        href = "articles/clustering.html",
+        style = "margin-bottom: 5px;",
+        "Clustering"
+      )
+    )
+  )
+)
+```
+
+## Installation
+
+Being a wrapper to a [Julia](https://julialang.org/) package, `word2vec.r` requires the latter to be installed.
+
+```{r, eval=FALSE}
+# install.packages("remotes")
+remotes::install_github("news-r/word2vec.r") # github
+```
+
+## Setup
+
+You _must_ run `setup_word2vec` at the begining of every session, you will otherwise encounter errors and be prompted to do so.
+
+```{r}
+word2vec.r::setup_word2vec() # setup word2vec Julia dependency
+```

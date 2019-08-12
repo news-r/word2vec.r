@@ -2,3 +2,8 @@
 ^data-raw$
 ^README\.Rmd$
 ^\.travis\.yml$
+^_pkgdown\.yml$
+^index\.Rmd$
+vignettes
+docs
+pkgdown

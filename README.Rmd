@@ -34,7 +34,7 @@ You can install the package from Github with:
 remotes::install_github("news-r/word2vec.r")
 ```
 
-## Example
+## Examples
 
 You _must_ run `setup_word2vec` at the begining of every session, you will otherwise encounter errors and be prompted to do so.
 
@@ -50,6 +50,8 @@ The package comes with a dataset, [Macbeth by Shakespeare](https://en.wikipedia.
 ```{r}
 data("macbeth", package = "word2vec.r")
 ```
+
+### Word Vectors
 
 With data we can train a model and extract the vectors.
 
@@ -73,7 +75,7 @@ There are then a multitude of functions one can use on the model.
 
 All are well documented and have examples, visit their respective man pages with i.e.: `?get_vector`. Note that since all the functions listed above require the output of `word_vectors` (the `model` object in our case). Therefore a convenient reference class also exists.
 
-### Functional
+__Functional__
 
 ```{r}
 # words similar to king
@@ -83,10 +85,34 @@ cosine_similar_words(model, "king", 5L)
 size(model)
 ```
 
-### Reference Class
+__Reference Class__
 
 ```{r}
 wv <- WordVectors$new(model)
 wv$get_vector("macbeth")
 wv$cosine("rosse")
+```
+
+### Word Clusters
+
+You 
+
+```{r}
+model_path <- word2clusters(macbeth, classes = 50L) # train model
+model <- word_clusters(model_path)
+```
+
+__Functional__
+
+```{r}
+get_cluster(model, "king")
+get_cluster(model, "macbeth")
+```
+
+__Reference Class__
+
+```{r}
+wc <- WordClusters$new(model)
+wc$get_words(4L)
+wc$vocabulary("rosse")
 ```

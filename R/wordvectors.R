@@ -437,12 +437,12 @@ size.wordvectors <- function(model){
 #' index(model, "macbeth")
 #' }
 #' 
-#' @name index
+#' @name index2
 #' 
 #' @export
 index <- function(model, word) UseMethod("index")
 
-#' @rdname index
+#' @rdname index2
 #' @method index wordvectors
 #' @export
 index.wordvectors <- function(model, word){
@@ -450,7 +450,7 @@ index.wordvectors <- function(model, word){
   julia_call("index", model, word)
 }
 
-#' @rdname index
+#' @rdname index2
 #' @method index wordclusters
 #' @export
 index.wordclusters <- function(model, word){

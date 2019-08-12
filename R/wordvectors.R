@@ -89,7 +89,6 @@ word2vec <- function(train, output = NULL, size = 100L, window = 5L,
     alpha = alpha, debug = debug, binary = binary, cbow = cbow, 
     verbose = tolower(verbose)
   )
-  print(opts)
   julia_eval(opts)
 
   # cleanup

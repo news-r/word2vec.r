@@ -35,7 +35,7 @@ word2clusters <- function(train, output = NULL,
   word2vec_installed <- julia_exists("word2clusters")
   if(!word2vec_installed) 
     stop(
-      "word2vec is ", 
+      "word2clusters is ", 
       crayon::red("not installed"), 
       " see `",
       crayon::blue("setup_word2vec"), "`", 
@@ -73,7 +73,6 @@ word2clusters <- function(train, output = NULL,
     alpha = alpha, debug = debug, binary = binary, cbow = cbow, 
     verbose = tolower(verbose)
   )
-  print(opts)
   julia_eval(opts)
 
   # cleanup

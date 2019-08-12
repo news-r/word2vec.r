@@ -39,7 +39,7 @@ word2phrase <- function(train, output = NULL, min_count = 5L,
   # prepare output
   output_temp <- FALSE
   if(is.null(output)){
-    output <- tempfile(fileext = ".txt")
+    output <- tempfile(fileext = "")
     output_temp <- TRUE
   }
 

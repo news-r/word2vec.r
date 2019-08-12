@@ -24,12 +24,14 @@
 #' 
 #' @examples
 #' \dontrun{
+#' # setup word2vec Julia dependency
+#' setup_word2vec()
+#' 
 #' # sample corpus
-#' corpus <- paste("Julia has foreign function interfaces for C/Fortran,", 
-#'   "C++, Python, R, Java, and many other languages.")
+#' data("macbeth", package = "word2vec.jlr")
 #' 
 #' # train model
-#' model_path <- word2vec(corpus)
+#' model_path <- word2vec(macbeth)
 #' }
 #' 
 #' @return Invisibly returns the \code{output}.
@@ -94,7 +96,7 @@ word2vec <- function(train, output = NULL, size = 100L, window = 5L,
   if(input_temp) unlink(train_path, force = TRUE)
   
   # build
-  output <- .construct_model(output, temp = output_temp)
+  output <- .construct_word2vec(output, temp = output_temp)
   invisible(output)
 }
 
@@ -113,7 +115,7 @@ word2vec <- function(train, output = NULL, size = 100L, window = 5L,
 as_word2vec <- function(file){
   assert_that(!missing(file), msg = "Missing `file`")
   path <- normalizePath(file)
-  .construct_model(path, temp = FALSE)
+  .construct_word2vec(path, temp = FALSE)
 }
 
 #' Word Vectors
@@ -124,15 +126,17 @@ as_word2vec <- function(file){
 #' 
 #' @examples
 #' \dontrun{
+#' # setup word2vec Julia dependency
+#' setup_word2vec()
+#' 
 #' # sample corpus
-#' corpus <- paste("Julia has foreign function interfaces for C/Fortran,", 
-#'   "C++, Python, R, Java, and many other languages.")
+#' data("macbeth", package = "word2vec.jlr")
 #' 
 #' # train model
-#' model_path <- word2vec(corpus)
+#' model_path <- word2vec(macbeth)
 #' 
 #' # get word vectors
-#' word_vectors(model_path)
+#' model <- word_vectors(model_path)
 #' }
 #' 
 #' @name word_vectors
@@ -146,8 +150,84 @@ word_vectors <- function(file) UseMethod("word_vectors")
 #' @method word_vectors word2vec
 #' @export
 word_vectors.word2vec <- function(file){
-  opts <- glue::glue('model = wordvectors("{file}");', file = file$file)
-  julia_command(opts)
+  assert_that(file.exists(file$file), msg = "`file` does not exist")
+  opts <- glue::glue('wordvectors("{file}");', file = file$file)
+  model <- julia_eval(opts)
   if(file$temp) unlink(file$file, force = TRUE) # cleanup
-  invisible()
+  .construct_word2vec_model(model)
+}
+
+#' Get Vector
+#' 
+#' Extract a specific word vector.
+#' 
+#' @param model A model as returned by \code{\link{word_vectors}}.
+#' @param word The word to extract.
+#' 
+#' @examples
+#' \dontrun{
+#' # setup word2vec Julia dependency
+#' setup_word2vec()
+#' 
+#' # sample corpus
+#' data("macbeth", package = "word2vec.jlr")
+#' 
+#' # train model
+#' model_path <- word2vec(macbeth)
+#' 
+#' # get word vectors
+#' model <- word_vectors(model_path)
+#' 
+#' # get vector of specific word
+#' get_vector(model, "macbeth")
+#' }
+#' 
+#' @name get_vector
+#' 
+#' @export
+get_vector <- function(model, word) UseMethod("get_vector")
+
+#' @rdname get_vector
+#' @method get_vector wordvectors
+#' @export
+get_vector.wordvectors <- function(model, word){
+  assert_that(!missing(word), msg = "Missing `word`")
+  julia_call("get_vector", model, word)
+}
+
+#' Get Vocabulary
+#' 
+#' Return the vocabulary as a vector of words.
+#' 
+#' @inheritParams get_vector
+#' 
+#' @examples
+#' \dontrun{
+#' # setup word2vec Julia dependency
+#' setup_word2vec()
+#' 
+#' # sample corpus
+#' data("macbeth", package = "word2vec.jlr")
+#' 
+#' # train model
+#' model_path <- word2vec(macbeth)
+#' 
+#' # get word vectors
+#' model <- word_vectors(model_path)
+#' 
+#' # get vocabulary
+#' vocab <- vocabulary(model)
+#' head(vocab)
+#' }
+#' 
+#' @name vocabulary
+#' 
+#' @export
+vocabulary <- function(model) UseMethod("vocabulary")
+
+#' @rdname vocabulary
+#' @method vocabulary wordvectors
+#' @export
+vocabulary.wordvectors <- function(model){
+  julia_call("vocabulary", model)
 }

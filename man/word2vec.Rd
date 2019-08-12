@@ -52,12 +52,14 @@ Train Word2Vec model.
 }
 \examples{
 \dontrun{
+# setup word2vec Julia dependency
+setup_word2vec()
+
 # sample corpus
-corpus <- paste("Julia has foreign function interfaces for C/Fortran,", 
-  "C++, Python, R, Java, and many other languages.")
+data("macbeth", package = "word2vec.jlr")
 
 # train model
-model_path <- word2vec(corpus)
+model_path <- word2vec(macbeth)
 }
 
 }

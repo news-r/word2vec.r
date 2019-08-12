@@ -267,3 +267,39 @@ in_vocabulary <- function(model, word) UseMethod("in_vocabulary")
 in_vocabulary.wordvectors <- function(model, word){
   julia_call("in_vocabulary", model, word)
 }
+
+#' Size
+#' 
+#' Return the word vector length and the number of words.
+#' 
+#' @inheritParams get_vector
+#' 
+#' @examples
+#' \dontrun{
+#' # setup word2vec Julia dependency
+#' setup_word2vec()
+#' 
+#' # sample corpus
+#' data("macbeth", package = "word2vec.jlr")
+#' 
+#' # train model
+#' model_path <- word2vec(macbeth)
+#' 
+#' # get word vectors
+#' model <- word_vectors(model_path)
+#' 
+#' # check size of model
+#' size(model)
+#' }
+#' 
+#' @name size
+#' 
+#' @export
+size <- function(model) UseMethod("size")
+
+#' @rdname size
+#' @method size wordvectors
+#' @export
+size.wordvectors <- function(model){
+  julia_call("size", model)
+}

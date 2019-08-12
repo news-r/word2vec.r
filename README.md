@@ -6,6 +6,8 @@
 word2vec.r
 ==========
 
+<img src="./man/figures/logo.png" height="200" align="right" />
+
 `word2vec.r` is an R wrapper to the `Word2Vec.jl` Julia package.
 
 -   [Website](https://word2vec.news-r.org)

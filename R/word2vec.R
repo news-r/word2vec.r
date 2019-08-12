@@ -231,3 +231,39 @@ vocabulary <- function(model) UseMethod("vocabulary")
 vocabulary.wordvectors <- function(model){
   julia_call("vocabulary", model)
 }
+
+#' In Vocabulary
+#' 
+#' Return whether a specific word is in the vocabulary.
+#' 
+#' @inheritParams get_vector
+#' 
+#' @examples
+#' \dontrun{
+#' # setup word2vec Julia dependency
+#' setup_word2vec()
+#' 
+#' # sample corpus
+#' data("macbeth", package = "word2vec.jlr")
+#' 
+#' # train model
+#' model_path <- word2vec(macbeth)
+#' 
+#' # get word vectors
+#' model <- word_vectors(model_path)
+#' 
+#' # check if James I is mentioned
+#' in_vocabulary(model, "james")
+#' }
+#' 
+#' @name in_vocabulary
+#' 
+#' @export
+in_vocabulary <- function(model, word) UseMethod("in_vocabulary")
+
+#' @rdname in_vocabulary
+#' @method in_vocabulary wordvectors
+#' @export
+in_vocabulary.wordvectors <- function(model, word){
+  julia_call("in_vocabulary", model, word)
+}

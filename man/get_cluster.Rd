@@ -28,7 +28,7 @@ data("macbeth", package = "word2vec.r")
 # train model
 model_path <- word2clusters(macbeth, classes = 50L)
 
-# get word vectors
+# get word clusters
 model <- word_clusters(model_path)
 
 # get cluster

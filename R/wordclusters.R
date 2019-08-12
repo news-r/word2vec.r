@@ -158,9 +158,9 @@ word_clusters.word2clusters <- function(file){
 #' # train model
 #' model_path <- word2clusters(macbeth, classes = 50L)
 #' 
-#' # get word vectors
+#' # get word clusters
 #' model <- word_clusters(model_path)
-#'
+#' 
 #' # get cluster
 #' get_cluster(model, "king")
 #' get_cluster(model, "macbeth")
@@ -252,3 +252,71 @@ get_words.wordclusters <- function(model, cluster = 0L){
   cl <- as.integer(cluster)
   julia_call("get_words", model, cl)
 }
+
+#' Word Clusters Reference Class
+#'
+#' Convert the output of \code{word_clusters} into a convenient reference class.
+#' 
+#' @section Methods: 
+#' All methods applicable to objects of class \code{wordclusters} as returned 
+#' by \code{\link{word_clusters}} are valid here. See their respective man pages
+#' for documentation on their arguments and return values.
+#' 
+#' \itemize{
+#'   \item{\code{\link{vocabulary}}}
+#'   \item{\code{\link{in_vocabulary}}}
+#'   \item{\code{\link{index}}}
+#'   \item{\code{\link{get_cluster}}}
+#'   \item{\code{\link{clusters}}}
+#'   \item{\code{\link{get_words}}}
+#' }
+#' 
+#' @examples
+#' \dontrun{
+#' # setup word2vec Julia dependency
+#' setup_word2vec()
+#' 
+#' # sample corpus
+#' data("macbeth", package = "word2vec.r")
+#' 
+#' # train model
+#' model_path <- word2clusters(macbeth, classes = 15L)
+#' 
+#' # get word vectors
+#' model <- word_clusters(model_path)
+#' wc <- WordClusters$new(model)
+#' wc$get_words(4L)
+#' wc$in_vocabulary("cake")
+#' }
+#' 
+#' @export
+WordClusters <- R6::R6Class(
+  "WordClusters",
+  public = list(
+    initialize = function(model){
+      assert_that(!missing(model), msg = "Missing `model`")
+      private$.model <- model
+    },
+    get_words = function(cluster){
+      get_words(private$.model, cluster)
+    },
+    vocabulary = function(word){
+      vocabulary(private$.model)
+    },
+    in_vocabulary = function(word){
+      in_vocabulary(private$.model, word)
+    },
+    index = function(word){
+      index(private$.model, word)
+    },
+    get_cluster = function(word){
+      get_cluster(private$.model)
+    },
+    clusters = function(word){
+      clusters(private$.model)
+    }
+  ),
+  private = list(
+    .model = NULL
+  )
+)

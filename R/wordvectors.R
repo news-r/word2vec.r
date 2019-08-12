@@ -48,6 +48,7 @@ word2vec <- function(train, output = NULL, size = 100L, window = 5L,
 
   # sanity checks
   assert_that(!missing(train), msg = "Missing `train`")
+  assert_that(length(train) == 1, msg = "`train` should be a vector of length 1")
   word2vec_installed <- julia_exists("word2vec")
   if(!word2vec_installed) 
     stop(

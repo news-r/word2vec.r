@@ -10,10 +10,10 @@ word_vectors(file)
 \method{word_vectors}{word2vec}(file)
 }
 \arguments{
-\item{file}{Path to odel, output of \code{\link{word2vec}} or \code{\link{as_word2vec}}.}
+\item{file}{Path to model, output of \code{\link{word2vec}} or \code{\link{as_word2vec}}.}
 }
 \description{
-Import Word vectors.
+Generate a word vectors from the model file.
 }
 \examples{
 \dontrun{

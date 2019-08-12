@@ -3,14 +3,18 @@
 \name{in_vocabulary}
 \alias{in_vocabulary}
 \alias{in_vocabulary.wordvectors}
+\alias{in_vocabulary.wordclusters}
 \title{In Vocabulary}
 \usage{
 in_vocabulary(model, word)
 
 \method{in_vocabulary}{wordvectors}(model, word)
+
+\method{in_vocabulary}{wordclusters}(model, word)
 }
 \arguments{
-\item{model}{A model as returned by \code{\link{word_vectors}}.}
+\item{model}{A model as returned by \code{\link{word_vectors}} or
+\code{\link{word_clusters}}.}
 
 \item{word}{The word to extract.}
 }

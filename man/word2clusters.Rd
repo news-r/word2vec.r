@@ -62,7 +62,7 @@ setup_word2vec()
 data("macbeth", package = "word2vec.r")
 
 # train model
-model_path <- word2clusters(macbeth)
+model_path <- word2clusters(macbeth, classes = 50L)
 }
 
 }

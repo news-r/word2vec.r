@@ -3,14 +3,18 @@
 \name{vocabulary}
 \alias{vocabulary}
 \alias{vocabulary.wordvectors}
+\alias{vocabulary.wordclusters}
 \title{Get Vocabulary}
 \usage{
 vocabulary(model)
 
 \method{vocabulary}{wordvectors}(model)
+
+\method{vocabulary}{wordclusters}(model)
 }
 \arguments{
-\item{model}{A model as returned by \code{\link{word_vectors}}.}
+\item{model}{A model as returned by \code{\link{word_vectors}} or
+\code{\link{word_clusters}}.}
 }
 \description{
 Return the vocabulary as a vector of words.

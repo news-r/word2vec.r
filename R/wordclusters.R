@@ -15,7 +15,7 @@
 #' data("macbeth", package = "word2vec.r")
 #' 
 #' # train model
-#' model_path <- word2clusters(macbeth)
+#' model_path <- word2clusters(macbeth, classes = 50L)
 #' }
 #' 
 #' @return Invisibly returns the \code{output}.
@@ -92,12 +92,164 @@ word2clusters <- function(train, output = NULL,
 #' 
 #' @examples
 #' \dontrun{
-#' model_path <- as_word2cluster("path/to/file.txt")
+#' model_path <- as_word2clusters("path/to/file.txt")
 #' }
 #'
 #' @export
-as_word2cluster <- function(file){
+as_word2clusters <- function(file){
   assert_that(!missing(file), msg = "Missing `file`")
   path <- normalizePath(file)
   .construct_word2cluster(path, temp = FALSE)
+}
+
+#' Word Clusters
+#' 
+#' Generate a word clusters from the model file.
+#' 
+#' @param file Path to model, output of \code{\link{word2clusters}} or \code{\link{as_word2clusters}}.
+#' 
+#' @examples
+#' \dontrun{
+#' # setup word2vec Julia dependency
+#' setup_word2vec()
+#' 
+#' # sample corpus
+#' data("macbeth", package = "word2vec.r")
+#' 
+#' # train model
+#' model_path <- word2clusters(macbeth, classes = 50L)
+#' 
+#' # get word vectors
+#' model <- word_clusters(model_path)
+#' }
+#' 
+#' @name word_clusters
+#' 
+#' @seealso \code{\link{word2clusters}}
+#' 
+#' @export
+word_clusters <- function(file) UseMethod("word_clusters")
+
+#' @rdname word_clusters
+#' @method word_clusters word2clusters
+#' @export
+word_clusters.word2clusters <- function(file){
+  assert_that(file.exists(file$file), msg = "`file` does not exist")
+  opts <- glue::glue('wordclusters("{file}");', file = file$file)
+  model <- julia_eval(opts)
+  if(file$temp) unlink(file$file, force = TRUE) # cleanup
+  .construct_word2clusters_model(model)
+}
+
+#' Get Cluster
+#' 
+#' Return the cluster number for a word in the vocabulary.
+#'
+#' @param model A model as returned by \code{\link{word_clusters}}.
+#' @param word Word to retrieve the cluster.
+#' 
+#' @examples
+#' \dontrun{
+#' # setup word2vec Julia dependency
+#' setup_word2vec()
+#' 
+#' # sample corpus
+#' data("macbeth", package = "word2vec.r")
+#' 
+#' # train model
+#' model_path <- word2clusters(macbeth, classes = 50L)
+#' 
+#' # get word vectors
+#' model <- word_clusters(model_path)
+#'
+#' # get cluster
+#' get_cluster(model, "king")
+#' get_cluster(model, "macbeth")
+#' }
+#'
+#' @name get_cluster
+#' 
+#' @export
+get_cluster <- function(model, word) UseMethod("get_cluster")
+
+#' @rdname get_cluster
+#' @method get_cluster wordclusters
+#' @export
+get_cluster.wordclusters <- function(model, word){
+  assert_that(!missing(word), msg = "Missing `word`")
+  julia_call("get_cluster", model, word)
+}
+
+#' Clusters
+#' 
+#' Return all the clusters.
+#'
+#' @inheritParams get_cluster
+#' 
+#' @examples
+#' \dontrun{
+#' # setup word2vec Julia dependency
+#' setup_word2vec()
+#' 
+#' # sample corpus
+#' data("macbeth", package = "word2vec.r")
+#' 
+#' # train model
+#' model_path <- word2clusters(macbeth, classes = 50L)
+#' 
+#' # get word vectors
+#' model <- word_clusters(model_path)
+#'
+#' # get cluster
+#' clusters(model)
+#' }
+#'
+#' @name clusters
+#' 
+#' @export
+clusters <- function(model) UseMethod("clusters")
+
+#' @rdname clusters
+#' @method clusters wordclusters
+#' @export
+clusters.wordclusters <- function(model){
+  julia_call("clusters", model)
+}
+
+#' Get words
+#' 
+#' Return all the words given a cluster.
+#'
+#' @inheritParams get_cluster
+#' @param cluster Cluster number as integral.
+#' 
+#' @examples
+#' \dontrun{
+#' # setup word2vec Julia dependency
+#' setup_word2vec()
+#' 
+#' # sample corpus
+#' data("macbeth", package = "word2vec.r")
+#' 
+#' # train model
+#' model_path <- word2clusters(macbeth, classes = 25L)
+#' 
+#' # get word vectors
+#' model <- word_clusters(model_path)
+#'
+#' # get cluster
+#' get_words(model, 2L)
+#' }
+#'
+#' @name get_words
+#' 
+#' @export
+get_words <- function(model, cluster = 0L) UseMethod("get_words")
+
+#' @rdname get_words
+#' @method get_words wordclusters
+#' @export
+get_words.wordclusters <- function(model, cluster = 0L){
+  cl <- as.integer(cluster)
+  julia_call("get_words", model, cl)
 }

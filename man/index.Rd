@@ -3,14 +3,18 @@
 \name{index}
 \alias{index}
 \alias{index.wordvectors}
+\alias{index.wordclusters}
 \title{Index}
 \usage{
 index(model, word)
 
 \method{index}{wordvectors}(model, word)
+
+\method{index}{wordclusters}(model, word)
 }
 \arguments{
-\item{model}{A model as returned by \code{\link{word_vectors}}.}
+\item{model}{A model as returned by \code{\link{word_vectors}} or
+\code{\link{word_clusters}}.}
 
 \item{word}{The word to extract.}
 }

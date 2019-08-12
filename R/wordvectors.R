@@ -120,9 +120,9 @@ as_word2vec <- function(file){
 
 #' Word Vectors
 #' 
-#' Import Word vectors.
+#' Generate a word vectors from the model file.
 #' 
-#' @param file Path to odel, output of \code{\link{word2vec}} or \code{\link{as_word2vec}}.
+#' @param file Path to model, output of \code{\link{word2vec}} or \code{\link{as_word2vec}}.
 #' 
 #' @examples
 #' \dontrun{
@@ -283,7 +283,8 @@ get_vector.wordvectors <- function(model, word){
 #' 
 #' Return the vocabulary as a vector of words.
 #' 
-#' @inheritParams get_vector
+#' @param model A model as returned by \code{\link{word_vectors}} or
+#' \code{\link{word_clusters}}.
 #' 
 #' @examples
 #' \dontrun{
@@ -316,11 +317,20 @@ vocabulary.wordvectors <- function(model){
   julia_call("vocabulary", model)
 }
 
+#' @rdname vocabulary
+#' @method vocabulary wordclusters
+#' @export
+vocabulary.wordclusters <- function(model){
+  julia_call("vocabulary", model)
+}
+
 #' In Vocabulary
 #' 
 #' Return whether a specific word is in the vocabulary.
 #' 
 #' @inheritParams get_vector
+#' @param model A model as returned by \code{\link{word_vectors}} or
+#' \code{\link{word_clusters}}.
 #' 
 #' @examples
 #' \dontrun{
@@ -349,6 +359,14 @@ in_vocabulary <- function(model, word) UseMethod("in_vocabulary")
 #' @method in_vocabulary wordvectors
 #' @export
 in_vocabulary.wordvectors <- function(model, word){
+  assert_that(!missing(word), msg = "Missing `word`")
+  julia_call("in_vocabulary", model, word)
+}
+
+#' @rdname in_vocabulary
+#' @method in_vocabulary wordclusters
+#' @export
+in_vocabulary.wordclusters <- function(model, word){
   assert_that(!missing(word), msg = "Missing `word`")
   julia_call("in_vocabulary", model, word)
 }
@@ -399,6 +417,8 @@ size.wordvectors <- function(model){
 #' Return the index of the work in the vectors.
 #' 
 #' @inheritParams get_vector
+#' @param model A model as returned by \code{\link{word_vectors}} or
+#' \code{\link{word_clusters}}.
 #' 
 #' @examples
 #' \dontrun{
@@ -427,6 +447,14 @@ index <- function(model, word) UseMethod("index")
 #' @method index wordvectors
 #' @export
 index.wordvectors <- function(model, word){
+  assert_that(!missing(word), msg = "Missing `word`")
+  julia_call("index", model, word)
+}
+
+#' @rdname index
+#' @method index wordclusters
+#' @export
+index.wordclusters <- function(model, word){
   assert_that(!missing(word), msg = "Missing `word`")
   julia_call("index", model, word)
 }

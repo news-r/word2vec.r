@@ -386,7 +386,7 @@ cosine <- function(model, word, n = 10L) UseMethod("cosine")
 cosine.wordvectors <- function(model, word, n = 10L){
   assert_that(!missing(word), msg = "Missing `word`")
   n <- as.integer(n) # force integer
-  cosine <- julia_call("cosine", model, word, n, need_return = "R")
+  cosine <- julia_call("cosine", model, word, n)
   class(cosine) <- "list" # dangerous but wtf, a tuple is just a list innit
   tibble::tibble(
     index = as.integer(cosine[[1]]),
@@ -471,4 +471,62 @@ cosine_similar_words.wordvectors <- function(model, word, n = 10L){
   assert_that(!missing(word), msg = "Missing `word`")
   n <- as.integer(n) # force integer
   julia_call("cosine_similar_words", model, word, n)
+}
+
+#' Analogy
+#' 
+#' Compute the analogy similarity between two lists of words. The positions
+#' and the similarity values of the top \code{n} similar words will be returned.
+#' For example: "king - man + woman =~ queen"
+#' 
+#' @inheritParams get_vector
+#' @param pos,neg Positive and negative words.
+#' @param n Number of neightbours to return.
+#' 
+#' @examples
+#' \dontrun{
+#' # setup word2vec Julia dependency
+#' setup_word2vec()
+#' 
+#' # sample corpus
+#' data("macbeth", package = "word2vec.jlr")
+#' 
+#' # train model
+#' model_path <- word2vec(macbeth)
+#' 
+#' # get word vectors
+#' model <- word_vectors(model_path)
+#' 
+#' # "king - man + woman =~ queen"
+#' analogy_words(model, pos = list("king"), neg = list("malcolme"), 8L)
+#' }
+#' 
+#' @name analogy
+#' 
+#' @export
+analogy <- function(model, pos, neg, n = 5L) UseMethod("analogy")
+
+#' @rdname analogy
+#' @method analogy wordvectors
+#' @export
+analogy.wordvectors <- function(model, pos, neg, n = 5L){
+  n <- as.integer(n) # force integer
+  cosine <- julia_call("analogy", model, pos, neg, n)
+  class(cosine) <- "list" # dangerous but wtf, a tuple is just a list innit
+  tibble::tibble(
+    index = as.integer(cosine[[1]]),
+    cosine = as.numeric(cosine[[2]])
+  )
+}
+
+#' @rdname analogy
+#' @export
+analogy_words <- function(model, pos, neg, n = 5L) UseMethod("analogy_words")
+
+#' @rdname analogy
+#' @method analogy_words wordvectors
+#' @export
+analogy_words.wordvectors <- function(model, pos, neg, n = 5L){
+  n <- as.integer(n) # force integer
+  julia_call("analogy_words", model, pos, neg, n)
 }

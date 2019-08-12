@@ -265,6 +265,7 @@ in_vocabulary <- function(model, word) UseMethod("in_vocabulary")
 #' @method in_vocabulary wordvectors
 #' @export
 in_vocabulary.wordvectors <- function(model, word){
+  assert_that(!missing(word), msg = "Missing `word`")
   julia_call("in_vocabulary", model, word)
 }
 
@@ -302,4 +303,41 @@ size <- function(model) UseMethod("size")
 #' @export
 size.wordvectors <- function(model){
   julia_call("size", model)
+}
+
+#' Index
+#' 
+#' Return the index of the work in the vectors.
+#' 
+#' @inheritParams get_vector
+#' 
+#' @examples
+#' \dontrun{
+#' # setup word2vec Julia dependency
+#' setup_word2vec()
+#' 
+#' # sample corpus
+#' data("macbeth", package = "word2vec.jlr")
+#' 
+#' # train model
+#' model_path <- word2vec(macbeth)
+#' 
+#' # get word vectors
+#' model <- word_vectors(model_path)
+#' 
+#' # check if James I is mentioned
+#' index(model, "macbeth")
+#' }
+#' 
+#' @name index
+#' 
+#' @export
+index <- function(model, word) UseMethod("index")
+
+#' @rdname index
+#' @method index wordvectors
+#' @export
+index.wordvectors <- function(model, word){
+  assert_that(!missing(word), msg = "Missing `word`")
+  julia_call("index", model, word)
 }

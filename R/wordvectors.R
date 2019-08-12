@@ -100,7 +100,7 @@ word2vec <- function(train, output = NULL, size = 100L, window = 5L,
   invisible(output)
 }
 
-#' As model
+#' As Word2vec
 #' 
 #' Import a previously trained word2vec model.
 #' 

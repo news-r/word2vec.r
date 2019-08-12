@@ -2,7 +2,7 @@
 % Please edit documentation in R/wordvectors.R
 \name{as_word2vec}
 \alias{as_word2vec}
-\title{As model}
+\title{As Word2vec}
 \usage{
 as_word2vec(file)
 }

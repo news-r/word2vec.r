@@ -11,3 +11,6 @@ print.word2vec <- function(x, ...){
     ...
   )
 }
+
+#' @export
+print.word2cluster <- print.word2vec

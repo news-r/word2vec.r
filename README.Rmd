@@ -14,11 +14,12 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
-# word2vec.r
 
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.org/news-r/word2vec.r.svg?branch=master)](https://travis-ci.org/news-r/word2vec.r)
 <!-- badges: end -->
+
+# word2vec.r
 
 `word2vec.r` is an R wrapper to the `Word2Vec.jl` Julia package.
 
@@ -47,18 +48,14 @@ setup_word2vec()
 The package comes with a dataset, [Macbeth by Shakespeare](https://en.wikipedia.org/wiki/Macbeth). However, being a corpus of 17,319 words it is not lazyly loaded and needs to be imported manually with the `data` function.
 
 ```{r}
-# sample corpus
 data("macbeth", package = "word2vec.r")
 ```
 
 With data we can train a model and extract the vectors.
 
 ```{r}
-# train model
-model_path <- word2vec(macbeth)
-
-# get word vectors
-model <- word_vectors(model_path)
+model_path <- word2vec(macbeth) # train model
+model <- word_vectors(model_path) # get word vectors
 ```
 
 There are then a multitude of functions one can use on the model.

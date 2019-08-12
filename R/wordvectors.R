@@ -157,6 +157,90 @@ word_vectors.word2vec <- function(file){
   .construct_word2vec_model(model)
 }
 
+#' Word Vectors Reference Class
+#'
+#' Convert the output of \code{word_vectors} into a convenient reference class.
+#' 
+#' @section Methods: 
+#' All methods applicable to objects of class \code{wordvectors} as returned 
+#' by \code{\link{word_vectors}} are valid here. See their respective man pages
+#' for documentation on their arguments and return values.
+#' 
+#' \itemize{
+#'   \item{\code{\link{get_vector}}}
+#'   \item{\code{\link{vocabulary}}}
+#'   \item{\code{\link{in_vocabulary}}}
+#'   \item{\code{\link{size}}}
+#'   \item{\code{\link{index}}}
+#'   \item{\code{\link{cosine}}}
+#'   \item{\code{\link{cosine_similar_words}}}
+#'   \item{\code{\link{similarity}}}
+#'   \item{\code{\link{analogy}}}
+#'   \item{\code{\link{analogy_words}}}
+#' }
+#' 
+#' @examples
+#' \dontrun{
+#' # setup word2vec Julia dependency
+#' setup_word2vec()
+#' 
+#' # sample corpus
+#' data("macbeth", package = "word2vec.jlr")
+#' 
+#' # train model
+#' model_path <- word2vec(macbeth)
+#' 
+#' # get word vectors
+#' model <- word_vectors(model_path)
+#' wv <- WordVectors$new(model)
+#' wv$get_vector("king")
+#' wv$in_vocabulary("cake")
+#' }
+#' 
+#' @export
+WordVectors <- R6::R6Class(
+  "WordVectors",
+  public = list(
+    initialize = function(model){
+      assert_that(!missing(model), msg = "Missing `model`")
+      private$.model <- model
+    },
+    get_vector = function(word){
+      get_vector(private$.model, word)
+    },
+    vocabulary = function(word){
+      vocabulary(private$.model)
+    },
+    in_vocabulary = function(word){
+      in_vocabulary(private$.model, word)
+    },
+    size = function(){
+      size(private$.model)
+    },
+    index = function(word){
+      index(private$.model, word)
+    },
+    cosine = function(word, n = 10L){
+      cosine(private$.model, word, n = 10L)
+    },
+    cosine_similar_words = function(word, n = 10L){
+      cosine_similar_words(private$.model, word, n = 10L)
+    },
+    similarity = function(word1, word2){
+      similarity(private$.model, word1, word2)
+    },
+    analogy = function(pos, neg, n = 5L){
+      analogy(private$.model, pos, neg, n = 5L)
+    },
+    analogy_words = function(pos, neg, n = 5L){
+      analogy_words(private$.model, pos, neg, n = 5L)
+    }
+  ),
+  private = list(
+    .model = NULL
+  )
+)
+
 #' Get Vector
 #' 
 #' Extract a specific word vector.
@@ -511,7 +595,7 @@ analogy <- function(model, pos, neg, n = 5L) UseMethod("analogy")
 #' @export
 analogy.wordvectors <- function(model, pos, neg, n = 5L){
   n <- as.integer(n) # force integer
-  cosine <- julia_call("analogy", model, pos, neg, n)
+  cosine <- julia_call("analogy", model, as.list(pos), as.list(neg), n)
   class(cosine) <- "list" # dangerous but wtf, a tuple is just a list innit
   tibble::tibble(
     index = as.integer(cosine[[1]]),
@@ -528,5 +612,5 @@ analogy_words <- function(model, pos, neg, n = 5L) UseMethod("analogy_words")
 #' @export
 analogy_words.wordvectors <- function(model, pos, neg, n = 5L){
   n <- as.integer(n) # force integer
-  julia_call("analogy_words", model, pos, neg, n)
+  julia_call("analogy_words", model, as.list(pos), as.list(neg), n)
 }

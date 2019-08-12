@@ -12,7 +12,8 @@ Description: Implementation of 'Julia' 'Word2vec'.
 Encoding: UTF-8
 LazyData: false
 Depends: R (>= 2.10)
-Imports: 
+Imports:
+  R6,
   cli, 
   glue,
   crayon,

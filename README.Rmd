@@ -95,12 +95,21 @@ wv$cosine("rosse")
 
 ### Word Clusters
 
-You 
+You can also cluster words.
 
 ```{r}
 model_path <- word2clusters(macbeth, classes = 50L) # train model
 model <- word_clusters(model_path)
 ```
+
+Then again, we provide both a functional API and a reference class.
+
+- `vocabulary`
+- `in_vocabulary`
+- `index`
+- `get_cluster`
+- `clusters`
+- `get_words`
 
 __Functional__
 

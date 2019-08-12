@@ -1,20 +1,17 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
 <!-- badges: start -->
+[![Travis build status](https://travis-ci.org/news-r/word2vec.r.svg?branch=master)](https://travis-ci.org/news-r/word2vec.r) <!-- badges: end -->
 
-[![Travis build
-status](https://travis-ci.org/news-r/word2vec.r.svg?branch=master)](https://travis-ci.org/news-r/word2vec.r)
-<!-- badges: end -->
-
-# word2vec.r
+word2vec.r
+==========
 
 `word2vec.r` is an R wrapper to the `Word2Vec.jl` Julia package.
 
-## Installation
+Installation
+------------
 
-Being a wrapper to a [Julia](https://julialang.org/) package,
-`word2vec.r` requires the latter to be installed.
+Being a wrapper to a [Julia](https://julialang.org/) package, `word2vec.r` requires the latter to be installed.
 
 You can install the package from Github with:
 
@@ -23,25 +20,19 @@ You can install the package from Github with:
 remotes::install_github("news-r/word2vec.r")
 ```
 
-## Examples
+Examples
+--------
 
-You *must* run `setup_word2vec` at the begining of every session, you
-will otherwise encounter errors and be prompted to do so.
+You *must* run `setup_word2vec` at the begining of every session, you will otherwise encounter errors and be prompted to do so.
 
 ``` r
 library(word2vec.r)
 
 # setup word2vec Julia dependency
 setup_word2vec()
-#> Julia version 1.1.1 at location /Applications/Julia-1.1.app/Contents/Resources/julia/bin will be used.
-#> Loading setup script for JuliaCall...
-#> Finish loading setup script for JuliaCall.
 ```
 
-The package comes with a dataset, [Macbeth by
-Shakespeare](https://en.wikipedia.org/wiki/Macbeth). However, being a
-corpus of 17,319 words it is not lazyly loaded and needs to be imported
-manually with the `data` function.
+The package comes with a dataset, [Macbeth by Shakespeare](https://en.wikipedia.org/wiki/Macbeth). However, being a corpus of 17,319 words it is not lazyly loaded and needs to be imported manually with the `data` function.
 
 ``` r
 data("macbeth", package = "word2vec.r")
@@ -58,28 +49,25 @@ model <- word_vectors(model_path) # get word vectors
 
 There are then a multitude of functions one can use on the model.
 
-  - `get_vector`
-  - `vocabulary`
-  - `in_vocabulary`
-  - `size`
-  - `index`
-  - `cosine`
-  - `cosine_similar_words`
-  - `similarity`
-  - `analogy`
-  - `analogy_words`
+-   `get_vector`
+-   `vocabulary`
+-   `in_vocabulary`
+-   `size`
+-   `index`
+-   `cosine`
+-   `cosine_similar_words`
+-   `similarity`
+-   `analogy`
+-   `analogy_words`
 
-All are well documented and have examples, visit their respective man
-pages with i.e.: `?get_vector`. Note that since all the functions listed
-above require the output of `word_vectors` (the `model` object in our
-case). Therefore a convenient reference class also exists.
+All are well documented and have examples, visit their respective man pages with i.e.: `?get_vector`. Note that since all the functions listed above require the output of `word_vectors` (the `model` object in our case). Therefore a convenient reference class also exists.
 
 **Functional**
 
 ``` r
 # words similar to king
 cosine_similar_words(model, "king", 5L)
-#> [1] "king"  "rosse" "thy"   "me"    "out"
+#> [1] "king"  "come"  "yet"   "from"  "rosse"
 
 # size of model
 size(model)
@@ -94,50 +82,59 @@ size(model)
 ``` r
 wv <- WordVectors$new(model)
 wv$get_vector("macbeth")
-#>   [1] -0.0067439286 -0.0710750896  0.0807698409 -0.1501817158  0.0814020979
-#>   [6] -0.0683351644  0.0061051356  0.0664431868 -0.0130708551  0.2644995184
-#>  [11]  0.0873477530  0.1845654244 -0.1658182006 -0.1329255900  0.0146613015
-#>  [16]  0.2192563288  0.0728642329  0.0522276459  0.1044500630  0.0791628365
-#>  [21] -0.0213799573  0.1065328942  0.1595026033 -0.1875519777 -0.0154155653
-#>  [26] -0.1182808465 -0.0055229886  0.0364016147  0.1294806395  0.0952415961
-#>  [31] -0.1599479283 -0.0360538952 -0.2224446292  0.0717060393 -0.0614378558
-#>  [36] -0.0092672916  0.1202068118 -0.0859398812  0.0705774760 -0.0319557723
-#>  [41] -0.0718306606  0.1621701959 -0.0766721538 -0.1317286157  0.1092061514
-#>  [46]  0.0785898400 -0.0331745336 -0.0111496830 -0.0892053073 -0.0932585491
-#>  [51] -0.0539209267 -0.0518433244  0.0343113760 -0.0492193057 -0.0608709597
-#>  [56] -0.0393319578  0.1423837352 -0.0174238852 -0.0043046631 -0.1805322266
-#>  [61]  0.0592417325 -0.0781907033 -0.0002444494 -0.0356560657 -0.0860858536
-#>  [66]  0.1953129205  0.0453943910 -0.1692827594  0.1718013293  0.0399053900
-#>  [71]  0.0016897949  0.0100185052  0.0786630441 -0.0731287263 -0.2057292552
-#>  [76] -0.0038976831 -0.1377540110 -0.0176792281 -0.0850553315 -0.1061232998
-#>  [81]  0.0196378737  0.0142447353  0.0624701209 -0.0858644984  0.0228135377
-#>  [86]  0.1458374005  0.0207455216 -0.0126582105  0.1609954442 -0.0321723345
-#>  [91]  0.0032048585  0.0586970591  0.0041316748  0.0561092067  0.1142088680
-#>  [96]  0.1191736752  0.0096590208  0.1319809084 -0.0083727200 -0.1074322590
+#>   [1]  0.0635810543 -0.0995174434  0.0869721416 -0.1318403260  0.0569811867
+#>   [6] -0.0399884187  0.0343900688  0.0143089687 -0.0467951006  0.2164154317
+#>  [11]  0.0610427910  0.1830144335 -0.1445292489 -0.0726938121  0.0006266667
+#>  [16]  0.1992010085  0.1222292030  0.0540336033  0.1390457958  0.1374453782
+#>  [21] -0.0337686682  0.0476056023  0.1241288312 -0.1659182583 -0.0049822154
+#>  [26] -0.0962433614  0.0072499924  0.0149581360  0.1686743469  0.0710407334
+#>  [31] -0.0664884238 -0.0163244512 -0.1612941381  0.0514158696 -0.0456609728
+#>  [36] -0.0034387675  0.1001402802 -0.0912103998  0.0375420728 -0.0653547747
+#>  [41] -0.0100630507  0.1447078178 -0.1385450370 -0.1403182787  0.0586591597
+#>  [46]  0.1127875529 -0.0199422664 -0.0215015126 -0.0591015126 -0.0602696308
+#>  [51] -0.0214881080 -0.0832241101  0.0610566743 -0.0564330329 -0.0138986911
+#>  [56] -0.0326216145  0.1612026993 -0.0790026076 -0.0185630252 -0.2189197047
+#>  [61]  0.0837808811 -0.1314051541 -0.0284982531 -0.0630860403 -0.0707558849
+#>  [66]  0.1748251592  0.1121374281 -0.0708028012  0.1577553146  0.0848757525
+#>  [71]  0.0021059638 -0.0237592361  0.0931023683 -0.1055610186 -0.1658708633
+#>  [76] -0.0121311943 -0.1720872626  0.0122216756 -0.1929750345 -0.1492912453
+#>  [81]  0.0252576827  0.0249398014 -0.0468357933 -0.0819583296  0.0746853578
+#>  [86]  0.1879459028  0.0511540005 -0.0552424141  0.2260399594 -0.0589406570
+#>  [91] -0.0398457551  0.0803224854  0.0177103947  0.0343560785  0.0489676089
+#>  [96]  0.0870554419  0.0657722333  0.1658368730  0.0089542959 -0.0574345506
 wv$cosine("rosse")
 #> # A tibble: 10 x 2
 #>    index cosine
 #>    <int>  <dbl>
 #>  1    67  1    
-#>  2    56  1.000
+#>  2   106  1.000
 #>  3    51  1.000
-#>  4    91  1.000
-#>  5     9  1.000
-#>  6    89  1.000
-#>  7    48  1.000
-#>  8    58  1.000
-#>  9    34  1.000
-#> 10    50  1.000
+#>  4   115  1.000
+#>  5    56  1.000
+#>  6    54  1.000
+#>  7     4  1.000
+#>  8    13  1.000
+#>  9    21  1.000
+#> 10     3  1.000
 ```
 
 ### Word Clusters
 
-You
+You can also cluster words.
 
 ``` r
 model_path <- word2clusters(macbeth, classes = 50L) # train model
 model <- word_clusters(model_path)
 ```
+
+Then again, we provide both a functional API and a reference class.
+
+-   `vocabulary`
+-   `in_vocabulary`
+-   `index`
+-   `get_cluster`
+-   `clusters`
+-   `get_words`
 
 **Functional**
 
@@ -145,7 +142,7 @@ model <- word_clusters(model_path)
 get_cluster(model, "king")
 #> [1] 5
 get_cluster(model, "macbeth")
-#> [1] 45
+#> [1] 44
 ```
 
 **Reference Class**
@@ -153,111 +150,111 @@ get_cluster(model, "macbeth")
 ``` r
 wc <- WordClusters$new(model)
 wc$get_words(4L)
-#>  [1] "to"         "i"          "thy"        "know"       "too"       
-#>  [6] "about"      "eyes"       "doctor"     "while"      "master"    
-#> [11] "themselues" "vse"        "worst"
+#>  [1] "to"       "i"        "thy"      "know"     "too"      "comes"   
+#>  [7] "stand"    "himselfe" "daggers"  "power"    "fall"     "hearke"  
+#> [13] "chance"
 wc$vocabulary("rosse")
 #>   [1] "</s>"       "the"        "and"        "to"         "i"         
 #>   [6] "of"         "a"          "that"       "d"          "you"       
 #>  [11] "my"         "in"         "is"         "not"        "it"        
-#>  [16] "with"       "his"        "macb"       "be"         "s"         
+#>  [16] "with"       "his"        "be"         "macb"       "s"         
 #>  [21] "your"       "our"        "haue"       "but"        "what"      
 #>  [26] "me"         "he"         "for"        "this"       "all"       
-#>  [31] "so"         "him"        "thou"       "as"         "we"        
+#>  [31] "so"         "thou"       "him"        "as"         "we"        
 #>  [36] "enter"      "which"      "are"        "will"       "they"      
-#>  [41] "shall"      "no"         "on"         "then"       "their"     
-#>  [46] "macbeth"    "vpon"       "thee"       "do"         "macd"      
-#>  [51] "yet"        "from"       "vs"         "th"         "thy"       
-#>  [56] "king"       "come"       "now"        "there"      "would"     
-#>  [61] "at"         "hath"       "more"       "who"        "good"      
-#>  [66] "by"         "rosse"      "was"        "lady"       "them"      
-#>  [71] "t"          "time"       "if"         "her"        "like"      
-#>  [76] "should"     "did"        "let"        "st"         "say"       
-#>  [81] "when"       "make"       "were"       "banquo"     "where"     
-#>  [86] "lord"       "doe"        "o"          "or"         "tis"       
-#>  [91] "1"          "must"       "ile"        "may"        "done"      
-#>  [96] "know"       "feare"      "selfe"      "wife"       "how"       
-#> [101] "had"        "man"        "night"      "well"       "too"       
+#>  [41] "shall"      "no"         "on"         "then"       "macbeth"   
+#>  [46] "vpon"       "their"      "thee"       "do"         "macd"      
+#>  [51] "from"       "vs"         "th"         "yet"        "thy"       
+#>  [56] "king"       "come"       "there"      "now"        "would"     
+#>  [61] "at"         "hath"       "more"       "who"        "by"        
+#>  [66] "good"       "rosse"      "was"        "t"          "them"      
+#>  [71] "lady"       "time"       "if"         "like"       "her"       
+#>  [76] "should"     "st"         "did"        "let"        "say"       
+#>  [81] "when"       "where"      "were"       "make"       "banquo"    
+#>  [86] "doe"        "o"          "lord"       "or"         "tis"       
+#>  [91] "1"          "must"       "done"       "selfe"      "ile"       
+#>  [96] "know"       "may"        "feare"      "man"        "had"       
+#> [101] "wife"       "night"      "how"        "well"       "too"       
 #> [106] "why"        "one"        "great"      "see"        "exeunt"    
 #> [111] "am"         "speake"     "sir"        "lenox"      "an"        
-#> [116] "out"        "can"        "vp"         "mine"       "heere"     
-#> [121] "thane"      "mal"        "those"      "looke"      "nor"       
-#> [126] "such"       "blood"      "banq"       "giue"       "most"      
-#> [131] "these"      "sleepe"     "hand"       "things"     "2"         
-#> [136] "scena"      "here"       "la"         "before"     "againe"    
-#> [141] "cawdor"     "till"       "life"       "cannot"     "3"         
-#> [146] "doct"       "death"      "nature"     "art"        "day"       
-#> [151] "still"      "loue"       "shew"       "heart"      "macduffe"  
-#> [156] "heare"      "ha"         "both"       "take"       "some"      
-#> [161] "sey"        "way"        "men"        "she"        "owne"      
-#> [166] "call"       "though"     "within"     "knock"      "put"       
-#> [171] "strange"    "poore"      "worthy"     "euery"      "son"       
-#> [176] "father"     "nothing"    "could"      "name"       "borne"     
-#> [181] "heauen"     "thought"    "bloody"     "downe"      "goe"       
-#> [186] "ayre"       "ere"        "malc"       "other"      "whose"     
-#> [191] "euer"       "dead"       "without"    "against"    "deed"      
-#> [196] "leaue"      "wee"        "murther"    "haile"      "god"       
-#> [201] "made"       "neuer"      "dare"       "thus"       "about"     
-#> [206] "thinke"     "none"       "hee"        "three"      "each"      
-#> [211] "comes"      "malcolme"   "exit"       "much"       "cry"       
-#> [216] "sword"      "new"        "noble"      "pray"       "keepe"     
-#> [221] "beare"      "eye"        "into"       "honor"      "first"     
-#> [226] "euen"       "bed"        "onely"      "hands"      "scotland"  
-#> [231] "liues"      "liue"       "wood"       "gent"       "hang"      
-#> [236] "once"       "very"       "go"         "away"       "finde"     
-#> [241] "stand"      "face"       "double"     "whom"       "place"     
-#> [246] "morrow"     "beene"      "peace"      "seruant"    "fight"     
-#> [251] "else"       "hence"      "kings"      "hell"       "eyes"      
-#> [256] "two"        "welcome"    "full"       "hold"       "sight"     
-#> [261] "l"          "old"        "being"      "tell"       "words"     
-#> [266] "seyward"    "thine"      "flye"       "thoughts"   "friends"   
-#> [271] "murth"      "houre"      "woman"      "grace"      "duncan"    
-#> [276] "mac"        "false"      "last"       "fleans"     "royall"    
-#> [281] "bring"      "vnder"      "light"      "house"      "minde"     
-#> [286] "lye"        "lesse"      "head"       "macduff"    "further"   
-#> [291] "tyrant"     "nights"     "many"       "thunder"    "report"    
-#> [296] "off"        "get"        "highnesse"  "rest"       "businesse" 
-#> [301] "tongue"     "hope"       "feares"     "giuen"      "doctor"    
-#> [306] "best"       "enough"     "witches"    "might"      "does"      
-#> [311] "dunsinane"  "dayes"      "thing"      "true"       "rather"    
-#> [316] "knowne"     "himselfe"   "re"         "lords"      "sorrow"    
-#> [321] "children"   "any"        "fell"       "bell"       "drinke"    
-#> [326] "almost"     "present"    "hast"       "set"        "sonne"     
-#> [331] "gone"       "england"    "earth"      "truth"      "heard"     
-#> [336] "better"     "knocking"   "desire"     "fled"       "oh"        
-#> [341] "anon"       "knowes"     "meet"       "kill"       "sisters"   
-#> [346] "seeme"      "sit"        "ban"        "trouble"    "power"     
-#> [351] "fortune"    "mur"        "gracious"   "donalbaine" "while"     
-#> [356] "comming"    "bid"        "goes"       "breath"     "throw"     
-#> [361] "state"      "master"     "shake"      "daggers"    "since"     
-#> [366] "after"      "attendants" "seene"      "dy"         "chamber"   
-#> [371] "withall"    "english"    "lyes"       "issue"      "wisedome"  
-#> [376] "seyton"     "shalt"      "doth"       "fall"       "deepe"     
-#> [381] "little"     "rise"       "tyrants"    "mortall"    "thence"    
-#> [386] "faith"      "forth"      "themselues" "world"      "gentle"    
-#> [391] "thanes"     "cold"       "through"    "y"          "lay"       
-#> [396] "natures"    "faire"      "whence"     "lost"       "colours"   
-#> [401] "alarum"     "stay"       "makes"      "angus"      "vse"       
-#> [406] "please"     "late"       "send"       "neere"      "left"      
-#> [411] "word"       "helpe"      "powre"      "fate"       "hearke"    
-#> [416] "messenger"  "another"    "round"      "command"    "honest"    
-#> [421] "prima"      "attend"     "pale"       "high"       "spirits"   
-#> [426] "eare"       "together"   "fill"       "strong"     "purpose"   
-#> [431] "ring"       "returne"    "pleasure"   "darke"      "mother"    
-#> [436] "hostesse"   "innocent"   "bad"        "toth"       "cauldron"  
-#> [441] "country"    "answer"     "comfort"    "ouer"       "len"       
-#> [446] "backe"      "seemes"     "terrible"   "point"      "ten"       
-#> [451] "former"     "title"      "tertia"     "health"     "worst"     
-#> [456] "husband"    "thither"    "cause"      "graue"      "bene"      
-#> [461] "meanes"     "slaine"     "thrice"     "charme"     "farre"     
-#> [466] "certaine"   "horses"     "women"      "sound"      "indeed"    
-#> [471] "ment"       "soldiers"   "stands"     "water"      "foule"     
-#> [476] "takes"      "reason"     "selues"     "secunda"    "said"      
-#> [481] "meeting"    "thankes"    "home"       "crowne"     "harme"     
-#> [486] "porter"     "faces"      "chance"     "actus"      "feast"     
-#> [491] "braine"     "toward"     "free"       "amen"       "flourish"  
-#> [496] "saw"        "em"         "fire"       "bold"       "horror"    
-#> [501] "part"       "receiue"    "duties"     "safe"       "hither"    
-#> [506] "sonnes"     "friend"     "strike"     "care"       "perfect"   
-#> [511] "came"
+#> [116] "out"        "can"        "mine"       "vp"         "heere"     
+#> [121] "mal"        "thane"      "nor"        "looke"      "giue"      
+#> [126] "banq"       "such"       "those"      "blood"      "these"     
+#> [131] "things"     "most"       "sleepe"     "hand"       "2"         
+#> [136] "scena"      "againe"     "here"       "cawdor"     "before"    
+#> [141] "la"         "3"          "nature"     "till"       "cannot"    
+#> [146] "death"      "life"       "doct"       "art"        "day"       
+#> [151] "loue"       "still"      "shew"       "both"       "ha"        
+#> [156] "heart"      "take"       "heare"      "macduffe"   "within"    
+#> [161] "men"        "though"     "call"       "way"        "owne"      
+#> [166] "she"        "some"       "sey"        "worthy"     "strange"   
+#> [171] "nothing"    "euery"      "knock"      "put"        "poore"     
+#> [176] "could"      "father"     "son"        "ere"        "ayre"      
+#> [181] "bloody"     "name"       "goe"        "other"      "downe"     
+#> [186] "thought"    "heauen"     "borne"      "malc"       "haile"     
+#> [191] "leaue"      "god"        "against"    "without"    "wee"       
+#> [196] "whose"      "murther"    "dead"       "euer"       "deed"      
+#> [201] "three"      "hee"        "new"        "cry"        "comes"     
+#> [206] "noble"      "thus"       "about"      "each"       "much"      
+#> [211] "none"       "pray"       "thinke"     "malcolme"   "made"      
+#> [216] "exit"       "neuer"      "dare"       "sword"      "hands"     
+#> [221] "scotland"   "honor"      "into"       "beare"      "onely"     
+#> [226] "euen"       "eye"        "keepe"      "bed"        "first"     
+#> [231] "place"      "two"        "double"     "eyes"       "beene"     
+#> [236] "very"       "hang"       "liue"       "peace"      "once"      
+#> [241] "kings"      "liues"      "away"       "finde"      "face"      
+#> [246] "whom"       "welcome"    "full"       "hold"       "hence"     
+#> [251] "else"       "hell"       "morrow"     "seruant"    "stand"     
+#> [256] "fight"      "go"         "wood"       "gent"       "tell"      
+#> [261] "words"      "thine"      "mac"        "grace"      "sight"     
+#> [266] "houre"      "friends"    "being"      "duncan"     "thoughts"  
+#> [271] "murth"      "old"        "flye"       "l"          "seyward"   
+#> [276] "woman"      "thunder"    "report"     "head"       "get"       
+#> [281] "house"      "nights"     "royall"     "hope"       "rest"      
+#> [286] "vnder"      "lesse"      "highnesse"  "further"    "light"     
+#> [291] "false"      "tongue"     "businesse"  "macduff"    "off"       
+#> [296] "bring"      "last"       "minde"      "lye"        "many"      
+#> [301] "fleans"     "tyrant"     "witches"    "set"        "himselfe"  
+#> [306] "fell"       "present"    "hast"       "gone"       "earth"     
+#> [311] "truth"      "children"   "re"         "true"       "might"     
+#> [316] "giuen"      "feares"     "enough"     "thing"      "knowne"    
+#> [321] "sorrow"     "rather"     "almost"     "dayes"      "does"      
+#> [326] "heard"      "drinke"     "bell"       "knocking"   "best"      
+#> [331] "lords"      "any"        "england"    "better"     "sonne"     
+#> [336] "doctor"     "dunsinane"  "meet"       "anon"       "donalbaine"
+#> [341] "state"      "fortune"    "master"     "sisters"    "seeme"     
+#> [346] "breath"     "throw"      "bid"        "desire"     "comming"   
+#> [351] "shake"      "goes"       "trouble"    "while"      "daggers"   
+#> [356] "oh"         "ban"        "kill"       "fled"       "sit"       
+#> [361] "gracious"   "power"      "mur"        "knowes"     "lost"      
+#> [366] "faire"      "through"    "alarum"     "attendants" "whence"    
+#> [371] "another"    "helpe"      "angus"      "cold"       "vse"       
+#> [376] "doth"       "seene"      "shalt"      "withall"    "stay"      
+#> [381] "word"       "forth"      "deepe"      "dy"         "left"      
+#> [386] "themselues" "thanes"     "fall"       "lyes"       "after"     
+#> [391] "mortall"    "lay"        "powre"      "round"      "fate"      
+#> [396] "messenger"  "please"     "natures"    "makes"      "gentle"    
+#> [401] "late"       "chamber"    "since"      "world"      "hearke"    
+#> [406] "little"     "faith"      "english"    "command"    "thence"    
+#> [411] "rise"       "colours"    "neere"      "issue"      "send"      
+#> [416] "wisedome"   "tyrants"    "y"          "seyton"     "actus"     
+#> [421] "prima"      "foule"      "secunda"    "meeting"    "friend"    
+#> [426] "together"   "bad"        "toth"       "comfort"    "ouer"      
+#> [431] "seemes"     "terrible"   "point"      "ten"        "former"    
+#> [436] "title"      "tertia"     "husband"    "thither"    "thrice"    
+#> [441] "charme"     "farre"      "women"      "sound"      "indeed"    
+#> [446] "stands"     "water"      "takes"      "reason"     "thankes"   
+#> [451] "home"       "crowne"     "harme"      "honest"     "chance"    
+#> [456] "braine"     "toward"     "free"       "flourish"   "saw"       
+#> [461] "part"       "receiue"    "duties"     "safe"       "hither"    
+#> [466] "sonnes"     "care"       "perfect"    "came"       "attend"    
+#> [471] "high"       "spirits"    "eare"       "fill"       "purpose"   
+#> [476] "ring"       "darke"      "innocent"   "hostesse"   "pleasure"  
+#> [481] "returne"    "strong"     "pale"       "strike"     "horror"    
+#> [486] "bold"       "fire"       "em"         "amen"       "feast"     
+#> [491] "faces"      "porter"     "said"       "selues"     "horses"    
+#> [496] "certaine"   "slaine"     "meanes"     "bene"       "graue"     
+#> [501] "cause"      "worst"      "health"     "backe"      "len"       
+#> [506] "answer"     "country"    "cauldron"   "mother"     "soldiers"  
+#> [511] "ment"
 ```

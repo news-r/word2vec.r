@@ -18,6 +18,47 @@ navbar:
     - icon: fa-github fa-lg
       href: "https://github.com/news-r/word2vec.r"
 
+reference:
+  - title: "Word2Vec"
+    desc: >
+      Functions to generate and utilize word vectors.
+    contents: 
+      - WordVectors
+      - vocabulary
+      - in_vocabulary
+      - index
+      - get_vector
+      - size
+      - cosine
+      - cosine_similar_words
+      - similarity
+      - analogy
+      - analogy_words
+      - as_word2vec
+      - word_vectors
+      - word2vec
+      - word2phrase
+  - title: "Word2Clusters"
+    desc: >
+      Functions to generate word clusters.
+    contents: 
+      - WordClusters
+      - vocabulary
+      - in_vocabulary
+      - index
+      - get_cluster
+      - clusters
+      - get_words
+      - as_word2clusters
+      - word_clusters
+      - word2clusters
+  - title: "Misc"
+    desc: >
+      Dataset and setup function.
+    contents: 
+      - macbeth
+      - setup_word2vec
+
 authors:
   John Coene:
     href: http://john-coene.com

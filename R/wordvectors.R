@@ -113,6 +113,7 @@ word2vec <- function(train, output = NULL, size = 100L, window = 5L,
 #' @export
 as_word2vec <- function(file){
   assert_that(!missing(file), msg = "Missing `file`")
+  assert_that(!file.exists(file), msg = "`file` does not exist")
   path <- normalizePath(file)
   .construct_word2vec(path, temp = FALSE)
 }
